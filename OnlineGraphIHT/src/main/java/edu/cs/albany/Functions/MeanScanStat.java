@@ -9,12 +9,13 @@ import edu.cs.albany.Interface.Function;
 public class MeanScanStat implements Function{
 	private double[] current_weight;
 	private double[] historical_weight; 
+	
 	//Defining Data to work with
 	public MeanScanStat(double[] w, double[] hist_w){
 		this.current_weight = w;
-		this.current_weight = hist_w;
-		
+		this.historical_weight = hist_w;
 	}
+	
 	//Function Value Reckoning
 	public double Func_Value(double[] X) {
 		if(X == null)
@@ -30,17 +31,20 @@ public class MeanScanStat implements Function{
 		}
 		return funcValue;
 	}
+	
 	//Estimate Gradient
-	public double Gradient(double[] X) {
+	public double[] Gradient(double[] X) {
 		if(X == null)
 			System.out.println("Error: Incorrect Input");
-		double gradient = 0.0;
+		int n = X.length;
+		double[] gradient = new double[n];
 		
-		double sigmaWs = StatUtils.sum(this.current_weight);
-		double sigmaW = StatUtils.sum(this.historical_weight);
-		double sigmaX = StatUtils.sum(X);
-		
-		gradient = -((sigmaWs+sigmaW/sigmaX)+X.length*(Func_Value(X)/sigmaX));
+		for(int i = 0; i < n; i++){
+			double temp1 = -(this.current_weight[i] + this.historical_weight[i])/X[i];
+			double temp2 = n * (this.current_weight[i]*X[i] + this.historical_weight[i]*X[i])/Math.pow(X[i],2);
+			
+			gradient[i] = temp1+temp2;
+		}
 		
 		return gradient;
 	}

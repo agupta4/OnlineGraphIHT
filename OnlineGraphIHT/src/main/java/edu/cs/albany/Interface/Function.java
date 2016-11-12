@@ -3,6 +3,7 @@ package edu.cs.albany.Interface;
 public interface Function {
 	
 	public double Func_Value(double[] X);
-	public double Gradient(double[] X);
+	
+	public double[] Gradient(double[] X);
 	
 }
