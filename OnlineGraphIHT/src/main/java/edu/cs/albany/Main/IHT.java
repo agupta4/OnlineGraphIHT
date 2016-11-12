@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class IHT {
 	private double[] X;
-	private double[] current_pool;
+	private ArrayList<Double> S;	//Current set of features
+	private ArrayList<Double> Sbar;	//Set of attributes which doesn't receive the observation
 	private int graphSize;
 	private ArrayList<Integer[]> edges;
 	private ArrayList<Double> edgecost;
@@ -14,9 +15,27 @@ public class IHT {
 	}
 	
 	public void Run(){
-		
+		for(double element: Sbar){
+			S = unionset(S, element);
+			
+		}
 	}
-	
+	//Union of 2 different sets
+	private ArrayList<Double> unionset(ArrayList<Double> s2, double element) {
+		// TODO Auto-generated method stub
+		if(s2 == null){
+			ArrayList<Double> temp = new ArrayList<Double>();
+			temp.add(element);
+			return temp;
+		}
+		else if(s2.contains(element)){
+			return s2;
+		}
+		
+		s2.add(element);
+		return s2;
+	}
+
 	//Normalize Gradient
 	public double[] NormalizeGrad(double[] gradient, double[] x){
 		double[] normalizedGradient = new double[graphSize];
