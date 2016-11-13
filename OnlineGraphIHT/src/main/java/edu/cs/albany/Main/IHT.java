@@ -48,8 +48,7 @@ public class IHT {
 		for(Integer[] element: edges){
 			nodes.add(element[0]);
 			nodes.add(element[1]);
-		}
-		
+		}	
 		this.c = c;
 		this.s = s;
 		this.g = g;
@@ -71,7 +70,7 @@ public class IHT {
 		
 		for(double element: Sbar){
 			S = unionset(S, element);
-			func.Gradient(x);
+			double[] gradient = func.Gradient(x);
 		}
 	}
 	
