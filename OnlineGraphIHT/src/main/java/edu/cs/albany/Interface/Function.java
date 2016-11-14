@@ -6,4 +6,5 @@ public interface Function {
 	
 	public double[] Gradient(double[] X);
 	
+	public double[] getArgMinFx(double[] x);
 }

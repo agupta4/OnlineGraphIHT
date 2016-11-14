@@ -8,6 +8,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
 
 import edu.albany.cs.base.ConnectedComponents;
+import edu.albany.cs.headApprox.PCSFHead;
 import edu.cs.albany.Interface.Function;
 
 public class IHT {
@@ -58,6 +59,8 @@ public class IHT {
 		this.trueSubGraph = trueSubGraph;
 		this.func = func;
 		this.fileName = ResultfileName;
+		
+		this.Run();
 	}
 	
 	public void Run(){
@@ -70,7 +73,10 @@ public class IHT {
 		
 		for(double element: Sbar){
 			S = unionset(S, element);
-			double[] gradient = func.Gradient(x);
+			double[] gradient = func.Gradient(x);	//Gradient of function f(x, S)
+			double[] NGradient = this.NormalizeGrad(gradient, x);	//Normalize Gradient
+			PCSFHead obj = new PCSFHead(edges, edgecost, NGradient, s, g, B, trueSubGraph);
+			
 		}
 	}
 	
