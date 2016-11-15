@@ -7,16 +7,19 @@ import edu.cs.albany.Functions.MeanScanStat;
 import edu.cs.albany.Main.IHT;
 
 public class TestClass {
-	private String filePath;
-	
-	public TestClass(String filePath){
-		this.filePath = filePath;
+	private String HistfilePath;
+	private String CurrentfilePath;
+	public TestClass(String HistfilePath, String CurrentfilePath){
+		this.HistfilePath = HistfilePath;
+		this.CurrentfilePath = CurrentfilePath;
 	}
 	
-	public void MeanScanStat(String filePath){
+	public void MeanScanStat(){
 		System.out.println("--------------Test Starts---------------");
 		
-		APDMInputFormat apdm = new APDMInputFormat(this.filePath);
+		APDMInputFormat apdm = new APDMInputFormat(this.HistfilePath);
+		
+		
 		
 		int graph_size = apdm.data.numNodes;
 		ArrayList<Integer[]> edges = apdm.data.intEdges;
@@ -34,6 +37,7 @@ public class TestClass {
 	
 	public static void main(String[] args){
 		
-		TestClass obj = new TestClass("data/simulation1.txt");
+		TestClass obj = new TestClass("Historicaldata/simulation1.txt", "Currentdata/simualtion1.txt");
+		
 	}
 }
