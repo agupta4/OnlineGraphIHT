@@ -1,6 +1,7 @@
 package edu.cs.albany.Functions;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -12,13 +13,33 @@ import edu.cs.albany.Interface.Function;
 public class MeanScanStat implements Function{
 	private double[] current_weight;
 	private double[] historical_weight; 
-
+	private ArrayList<Integer> S;
 	//Defining Data to work with
 	public MeanScanStat(double[] w, double[] hist_w){
 		this.current_weight = w;
 		this.historical_weight = hist_w;
 	}
-	
+	public void setS(ArrayList<Integer> S){
+		this.S = S;
+	}
+	  // inner class
+	   public class Temp_weights {
+		   double [] temp_CW;
+		   double[] temp_HW;
+		public double[] getTemp_CW() {
+			return temp_CW;
+		}
+		public void setTemp_CW(double[] temp_CW) {
+			this.temp_CW = temp_CW;
+		}
+		public double[] getTemp_HW() {
+			return temp_HW;
+		}
+		public void setTemp_HW() {
+			this.temp_HW = historical_weight;
+		} 
+	   }
+	   
 	//Function Value Reckoning
 	public double Func_Value(double[] X) {
 		if(X == null)
@@ -37,19 +58,37 @@ public class MeanScanStat implements Function{
 	
 	//Estimate Gradient
 	public double[] Gradient(double[] X) {
-		if(X == null)
+		if(X == null || S == null)
 			System.out.println("Error: Incorrect Input");
+			
 		int n = X.length;
 		double[] gradient = new double[n];
+		Temp_weights obj = this.AlterWeights();
+		
+		double[] CW = obj.getTemp_CW();
+		double[] HW = obj.getTemp_HW();
 		
 		for(int i = 0; i < n; i++){
-			double temp1 = -(this.current_weight[i] + this.historical_weight[i])/X[i];
-			double temp2 = n * (this.current_weight[i]*X[i] + this.historical_weight[i]*X[i])/Math.pow(X[i],2);
+			double temp1 = -(CW[i] + HW[i])/X[i];
+			double temp2 = n * (CW[i]*X[i] + HW[i]*X[i])/Math.pow(X[i],2);
 			
 			gradient[i] = temp1+temp2;
 		}
 		
 		return gradient;
+	}
+	/**
+	 * Alter the temporary weights as an object of inner classes
+	 * @return the object of Temp_weights
+	 */
+	private Temp_weights AlterWeights() {	
+		Temp_weights weights = new Temp_weights();
+		weights.setTemp_HW(); 		//To instantiate the temporary historical weights 
+		for(int element: this.S){
+			weights.temp_CW[element] = this.current_weight[element];
+			weights.temp_HW[element] = 0.0;
+		}
+		return weights;
 	}
 	public BigDecimal[] getGradientBigDecimal(BigDecimal[] x) {
 		//Getting gradient in BigDecimal Format
@@ -114,5 +153,4 @@ public class MeanScanStat implements Function{
 		
 	}
 	
-
 }
