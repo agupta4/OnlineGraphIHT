@@ -1,3 +1,8 @@
+/**
+ * @author ETHICAL DRUIDS
+ * @version 1.0
+ */
+
 package edu.cs.albany.Functions;
 
 import java.math.BigDecimal;
@@ -14,10 +19,12 @@ public class MeanScanStat implements Function{
 	private double[] current_weight;
 	private double[] historical_weight; 
 	private ArrayList<Integer> S;
+	private int n;
 	//Defining Data to work with
 	public MeanScanStat(double[] w, double[] hist_w){
 		this.current_weight = w;
 		this.historical_weight = hist_w;
+		this.n = this.current_weight.length;
 	}
 	public void setS(ArrayList<Integer> S){
 		this.S = S;
@@ -55,8 +62,10 @@ public class MeanScanStat implements Function{
 		}
 		return funcValue;
 	}
-	
-	//Estimate Gradient
+	/**
+	 * @param feature vector X
+	 * @return double[] as Gradient for f(x, S)
+	 */
 	public double[] Gradient(double[] X) {
 		if(X == null || S == null)
 			System.out.println("Error: Incorrect Input");
@@ -104,14 +113,35 @@ public class MeanScanStat implements Function{
 		}
 		return Res;
 	}
-	
+	/**
+	 * Implementation step 1 for proj gradient descent
+	 * @param ArrayList<Integer>
+	 * @return double[] feature vector deduce by omega
+	 */
 	public double[] getArgMinFx(ArrayList<Integer> omega) {
 		// TODO Auto-generated method stub
 		BigDecimal[] GD = ArgMinFx(this);
+		BigDecimal[] x = this.ArgMinFx(this);
+		double[] x1 = new double[x.length];
 		
-		return null;
+		for(int j = 0; j < x.length; j++){
+			double item = x[j].doubleValue();
+			if(item < 0.0D){x1[j] = 0.0D;}
+			else if(item > 1.0D){x1[j] = 0.0D;}
+			else{x1[j] = item;}
+		}
+		for(int k = 0; k < this.n; k++){
+			if(!omega.contains(k)){
+				x1[k] = 0.0D;
+			}
+		}
+		return x1;
 	}
-	//Implementation of gradient descent
+	/**
+	 * This function implements projected gradient descent with alpha = 0.001 and err = 0.0000001
+	 * @param Function Type
+	 * @return Bigdecimal[] of x
+	 */
 	public BigDecimal[] ArgMinFx(Function func){
 		BigDecimal[] theta = new BigDecimal[100]; //Parameters
 		BigDecimal alpha = new BigDecimal("0.001");

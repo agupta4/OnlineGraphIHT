@@ -1,3 +1,8 @@
+/**
+ * @author ETHICAL DRUIDS
+ * @version 1.0
+ */
+
 package test;
 
 import java.util.ArrayList;
@@ -36,6 +41,8 @@ public class TestClass {
 		for(int s: candidateS){
 			double B = s - 1 + 0.0D;
 			iht = new IHT(graph_size, edges, edgeCost, apdm.data.base, s, 1, B, 5, MSS, null, "Optimal_Result.txt");
+			double[] yx = iht.x;
+			
 		}
 		
 	}

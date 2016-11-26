@@ -1,3 +1,8 @@
+/**
+ * @author ETHICAL DRUIDS
+ * @version 1.0
+ */
+
 package edu.cs.albany.Main;
 
 import java.util.ArrayList;
@@ -30,13 +35,14 @@ public class IHT {
 	/** number of iterations */
 	private final int t;
 	private int[] trueSubGraph;
-	private boolean singleNodeInitial;
+	//private boolean singleNodeInitial;
 	private String fileName;
 	private Function func;
 	
 	/*Results*/
-	private double[] x;
-	
+	public double[] x;
+	//Runtime
+	private long runTime; 
 	public IHT(int graph_size, ArrayList<Integer[]> edges, ArrayList<Double> edgeCost, double[] c,
 			int s, int g, double B, int t, Function func, int[] trueSubGraph, String ResultfileName){
 		this.graphSize = graph_size;
@@ -61,8 +67,10 @@ public class IHT {
 		this.Run();
 	}
 	
-	public void Run(){
+	public ArrayList<Integer> Run(){
 		//Initializing X
+		long start_time = System.nanoTime();
+		ArrayList<Integer> R = null;
 		InitializeX();
 		for(int element: Sbar){
 			S = unionset(S, element);
@@ -76,7 +84,16 @@ public class IHT {
 			double[] b = ARV.toArray();
 			
 			PCSFTail tail = new PCSFTail(edges, edgecost, b, s, g, B, trueSubGraph);
+			R = tail.bestForest.nodesInF;
+			for(int i = 0; i < b.length; i++){
+				if(!R.contains(i))
+					b[i] = 0.0;
+			}		
+			for(int i = 0; i < b.length; i++){this.x[i] = b[i];}
 		}
+		long end_time = System.nanoTime();
+		runTime = (long) ((end_time - start_time)/1e9);
+		return R;
 	}
 	
 	private void InitializeX() {
