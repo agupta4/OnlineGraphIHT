@@ -105,7 +105,7 @@ public class MeanScanStat implements Function{
 		return Res;
 	}
 	
-	public double[] getArgMinFx(double[] x) {
+	public double[] getArgMinFx(ArrayList<Integer> omega) {
 		// TODO Auto-generated method stub
 		BigDecimal[] GD = ArgMinFx(this);
 		

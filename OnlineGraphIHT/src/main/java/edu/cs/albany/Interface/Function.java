@@ -19,5 +19,5 @@ public interface Function {
 	/*
 	 * Applies the projected gradient descent for tail projection
 	 */
-	public double[] getArgMinFx(double[] x);
+	public double[] getArgMinFx(ArrayList<Integer> omega);
 }

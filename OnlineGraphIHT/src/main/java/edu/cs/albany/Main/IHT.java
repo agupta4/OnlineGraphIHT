@@ -2,13 +2,11 @@ package edu.cs.albany.Main;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.math3.stat.StatUtils;
+import org.apache.commons.math3.linear.ArrayRealVector;
 
-import edu.albany.cs.base.ConnectedComponents;
 import edu.albany.cs.headApprox.PCSFHead;
+import edu.albany.cs.tailApprox.PCSFTail;
 import edu.cs.albany.Interface.Function;
 
 public class IHT {
@@ -68,11 +66,16 @@ public class IHT {
 		InitializeX();
 		for(int element: Sbar){
 			S = unionset(S, element);
-			func.setS(S);
+			func.setS(S);	//Will change according to iteration
 			double[] gradient = func.Gradient(x);	//Gradient of function f(x, S)
 			double[] NGradient = this.NormalizeGrad(gradient, x);	//Normalize Gradient
-			PCSFHead obj = new PCSFHead(edges, edgecost, NGradient, s, g, B, trueSubGraph);
-			ArrayList<Integer> omega = obj.bestForest.nodesInF;
+			PCSFHead head = new PCSFHead(edges, edgecost, NGradient, s, g, B, trueSubGraph);
+			ArrayList<Integer> omega = head.bestForest.nodesInF;
+			double [] tempb = func.getArgMinFx(omega); //Implemrnt projected gradient descent
+			ArrayRealVector ARV = new ArrayRealVector(x).subtract(new ArrayRealVector(tempb));
+			double[] b = ARV.toArray();
+			
+			PCSFTail tail = new PCSFTail(edges, edgecost, b, s, g, B, trueSubGraph);
 		}
 	}
 	
