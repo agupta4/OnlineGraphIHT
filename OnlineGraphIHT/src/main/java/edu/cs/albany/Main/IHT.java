@@ -71,7 +71,7 @@ public class IHT {
 			double[] NGradient = this.NormalizeGrad(gradient, x);	//Normalize Gradient
 			PCSFHead head = new PCSFHead(edges, edgecost, NGradient, s, g, B, trueSubGraph);
 			ArrayList<Integer> omega = head.bestForest.nodesInF;
-			double [] tempb = func.getArgMinFx(omega); //Implemrnt projected gradient descent
+			double [] tempb = func.getArgMinFx(omega); //Implement projected gradient descent
 			ArrayRealVector ARV = new ArrayRealVector(x).subtract(new ArrayRealVector(tempb));
 			double[] b = ARV.toArray();
 			
