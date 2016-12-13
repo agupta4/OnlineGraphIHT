@@ -16,15 +16,14 @@ import edu.cs.albany.Interface.Function;
 
 //Implementation of mean scan statistics -Ws^Tx + (Wcap)s^Tx/1^Tx
 public class MeanScanStat implements Function{
-	private double[] current_weight;
-	private double[] historical_weight; 
+	//private double[] current_weight;
+	private double[] weight; 
 	private ArrayList<Integer> S;
 	private int n;
 	//Defining Data to work with
-	public MeanScanStat(double[] w, double[] hist_w){
-		this.current_weight = w;
-		this.historical_weight = hist_w;
-		this.n = this.current_weight.length;
+	public MeanScanStat(double[] hist_w){
+		this.weight = hist_w;
+		this.n = this.weight.length;
 	}
 	public void setS(ArrayList<Integer> S){
 		this.S = S;
@@ -43,7 +42,7 @@ public class MeanScanStat implements Function{
 			return temp_HW;
 		}
 		public void setTemp_HW() {
-			this.temp_HW = historical_weight;
+			this.temp_HW = weight;
 		} 
 	   }
 	   
@@ -51,8 +50,15 @@ public class MeanScanStat implements Function{
 	public double Func_Value(double[] X) {
 		if(X == null)
 			System.out.println("Error: Incorrect Input");
-		double WsX = new ArrayRealVector(this.current_weight).dotProduct(new ArrayRealVector(X));
-		double WX = new ArrayRealVector(this.historical_weight).dotProduct(new ArrayRealVector(X));
+		
+		Temp_weights obj = this.AlterWeights();
+		
+		double[] CW = obj.getTemp_CW();
+		double[] HW = obj.getTemp_HW();
+	
+		//Perform arithmetic dot product
+		double WsX = new ArrayRealVector(CW).dotProduct(new ArrayRealVector(X));
+		double WX = new ArrayRealVector(HW).dotProduct(new ArrayRealVector(X));
 		
 		double sigmaX = StatUtils.sum(X);
 		
@@ -94,7 +100,7 @@ public class MeanScanStat implements Function{
 		Temp_weights weights = new Temp_weights();
 		weights.setTemp_HW(); 		//To instantiate the temporary historical weights 
 		for(int element: this.S){
-			weights.temp_CW[element] = this.current_weight[element];
+			weights.temp_CW[element] = weights.temp_HW[element];
 			weights.temp_HW[element] = 0.0;
 		}
 		return weights;
@@ -120,7 +126,7 @@ public class MeanScanStat implements Function{
 	 */
 	public double[] getArgMinFx(ArrayList<Integer> omega) {
 		// TODO Auto-generated method stub
-		BigDecimal[] GD = ArgMinFx(this);
+		//BigDecimal[] GD = ArgMinFx(this);
 		BigDecimal[] x = this.ArgMinFx(this);
 		double[] x1 = new double[x.length];
 		
@@ -143,7 +149,7 @@ public class MeanScanStat implements Function{
 	 * @return Bigdecimal[] of x
 	 */
 	public BigDecimal[] ArgMinFx(Function func){
-		BigDecimal[] theta = new BigDecimal[100]; //Parameters
+		BigDecimal[] theta = new BigDecimal[n]; //Parameters
 		BigDecimal alpha = new BigDecimal("0.001");
 		BigDecimal err = new BigDecimal(1e-6D);
 		/** initialize theta with random values*/

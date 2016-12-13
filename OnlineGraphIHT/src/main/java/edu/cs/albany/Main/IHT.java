@@ -7,6 +7,7 @@ package edu.cs.albany.Main;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 
 import org.apache.commons.math3.linear.ArrayRealVector;
 
@@ -44,7 +45,7 @@ public class IHT {
 	//Runtime
 	private long runTime; 
 	public IHT(int graph_size, ArrayList<Integer[]> edges, ArrayList<Double> edgeCost, double[] c,
-			int s, int g, double B, int t, Function func, int[] trueSubGraph, String ResultfileName){
+			int s, int g, double B, int t, Function func, int[] trueSubGraph, ArrayList<Integer> Sbar, String ResultfileName){
 		this.graphSize = graph_size;
 		this.edges = edges;
 		this.edgecost = edgeCost;
@@ -61,6 +62,7 @@ public class IHT {
 		this.trueSubGraph = trueSubGraph;
 		this.func = func;
 		this.fileName = ResultfileName;
+		this.Sbar = Sbar;	//Will set the updated Sbar
 		this.S = new ArrayList<Integer>(); //Create an empty S
 		this.x = new double[this.graphSize];
 		
@@ -95,12 +97,18 @@ public class IHT {
 		runTime = (long) ((end_time - start_time)/1e9);
 		return R;
 	}
-	
+	/**
+	 * Initialize x Randomly
+	 */
 	private void InitializeX() {
-		// TODO Auto-generated method stub
-		for(double element: this.x){
-			element = 0.0;
+		Random rand = new Random();
+		for(int i = 0; i < this.c.length; i++){
+			if(rand.nextDouble() < 0.5D){
+				this.x[i] = 1.0D;
+			}else
+				this.x[i] = 0.0D;
 		}
+		
 	}
 
 	//Normalize Gradient
