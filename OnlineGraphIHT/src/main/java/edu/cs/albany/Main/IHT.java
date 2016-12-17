@@ -39,7 +39,7 @@ public class IHT {
 	//private boolean singleNodeInitial;
 	private String fileName;
 	private Function func;
-	
+	public ArrayList<Integer> bestNodes;
 	/*Results*/
 	public double[] x;
 	//Runtime
@@ -50,6 +50,7 @@ public class IHT {
 		this.edges = edges;
 		this.edgecost = edgeCost;
 		
+		this.nodes = new HashSet<Integer>();
 		for(Integer[] element: edges){
 			nodes.add(element[0]);
 			nodes.add(element[1]);
@@ -66,7 +67,7 @@ public class IHT {
 		this.S = new ArrayList<Integer>(); //Create an empty S
 		this.x = new double[this.graphSize];
 		
-		this.Run();
+		this.bestNodes = this.Run();
 	}
 	
 	public ArrayList<Integer> Run(){
@@ -94,7 +95,8 @@ public class IHT {
 			for(int i = 0; i < b.length; i++){this.x[i] = b[i];}
 		}
 		long end_time = System.nanoTime();
-		runTime = (long) ((end_time - start_time)/1e9);
+		runTime = (long) ((end_time - start_time));
+		System.out.println("Time taken"+runTime);
 		return R;
 	}
 	/**

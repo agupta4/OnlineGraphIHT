@@ -49,9 +49,14 @@ public class TestClass {
 				double B = s - 1 + 0.0D;
 				iht = new IHT(graph_size, edges, edgeCost, apdm.data.base, s, 1, B, 5, MSS, null, Sbar, "Optimal_Result.txt");
 				double[] yx = iht.x;
-			
+				ArrayList<Integer> bestNodes = iht.bestNodes;
+				for(int node: bestNodes){
+					System.out.print(node + "\t");
+				}
+				System.out.println();
 			}
 			System.out.println("------------------Loop ends for node:" +i+"------------------");
+			break;
 		}
 	}
 	//Happens only once in streaming environment
@@ -76,7 +81,8 @@ public class TestClass {
 
 	public static void main(String[] args){
 		//Start with historical and current data files
-		TestClass obj = new TestClass("Historicaldata/simulation1.txt", "Currentdata/simualtion1.txt");
+		TestClass obj = new TestClass("Data/Historicaldata/simulation1.txt", "Data/Currentdata/Current_simulation1.txt");
 		
+		obj.MeanScanStat();
 	}
 }

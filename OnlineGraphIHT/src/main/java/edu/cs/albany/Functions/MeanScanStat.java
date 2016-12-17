@@ -27,11 +27,17 @@ public class MeanScanStat implements Function{
 	}
 	public void setS(ArrayList<Integer> S){
 		this.S = S;
+		//for(int item: S)
+			//System.out.println(item);
 	}
 	  // inner class
 	   public class Temp_weights {
 		   double [] temp_CW;
 		   double[] temp_HW;
+		   public Temp_weights(){
+			   this.temp_CW = new double[weight.length];
+			   this.temp_HW = new double[weight.length];
+		   }
 		public double[] getTemp_CW() {
 			return temp_CW;
 		}
@@ -43,6 +49,7 @@ public class MeanScanStat implements Function{
 		}
 		public void setTemp_HW() {
 			this.temp_HW = weight;
+			//for(double item: temp_HW){System.out.println(item);}
 		} 
 	   }
 	   
@@ -88,6 +95,7 @@ public class MeanScanStat implements Function{
 			double temp2 = n * (CW[i]*X[i] + HW[i]*X[i])/Math.pow(X[i],2);
 			
 			gradient[i] = temp1+temp2;
+			if(Double.isNaN(gradient[i])){gradient[i] = 0.0;}
 		}
 		
 		return gradient;
@@ -100,7 +108,7 @@ public class MeanScanStat implements Function{
 		Temp_weights weights = new Temp_weights();
 		weights.setTemp_HW(); 		//To instantiate the temporary historical weights 
 		for(int element: this.S){
-			weights.temp_CW[element] = weights.temp_HW[element];
+			weights.temp_CW[element] = weights.getTemp_CW()[element];
 			weights.temp_HW[element] = 0.0;
 		}
 		return weights;
