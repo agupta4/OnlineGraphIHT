@@ -27,7 +27,7 @@ public class Apdm_File {
 	
 	public static void main(String[] args) throws IOException{
 		
-		Apdm_File obj = new Apdm_File("Data/Simulation/sm1.txt", "Data/Simulation/CrimeRate.txt");
+		Apdm_File obj = new Apdm_File("Data/Simulation/Old_simulation1.txt", "Data/Simulation/Current_CrimeRate.txt");
 		
 		obj.generateFile();
 	}
@@ -67,7 +67,7 @@ public class Apdm_File {
 		//double[] count = new double[apdm.data.numNodes];
 		//Arrays.fill(count, 0.0);
 
-		APDMInputFormat.generateAPDMFile("NULL", "Simulation", edge, PValue, null, null, trueedge, "Data/Simulation/simulation1.txt");
+		APDMInputFormat.generateAPDMFile("NULL", "Simulation", edge, PValue, null, null, trueedge, "Data/Simulation/simulation1_24.txt");
 		
 	}
 }

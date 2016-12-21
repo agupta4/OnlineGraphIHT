@@ -42,6 +42,7 @@ public class IHT {
 	public ArrayList<Integer> bestNodes;
 	/*Results*/
 	public double[] x;
+	public ArrayList<Double> func_value;
 	//Runtime
 	private long runTime; 
 	public IHT(int graph_size, ArrayList<Integer[]> edges, ArrayList<Double> edgeCost, double[] c,
@@ -57,16 +58,16 @@ public class IHT {
 		}	
 		this.c = c;
 		this.s = s;
-		this.g = g;
+		this.g = g;	//Connected components
 		this.B = B;
-		this.t = t;
+		this.t = t;	//Number of loops we are having->Not using
 		this.trueSubGraph = trueSubGraph;
 		this.func = func;
 		this.fileName = ResultfileName;
 		this.Sbar = Sbar;	//Will set the updated Sbar
 		this.S = new ArrayList<Integer>(); //Create an empty S
 		this.x = new double[this.graphSize];
-		
+		func_value = new ArrayList<Double>();
 		this.bestNodes = this.Run();
 	}
 	
@@ -78,11 +79,15 @@ public class IHT {
 		for(int element: Sbar){
 			S = unionset(S, element);
 			func.setS(S);	//Will change according to iteration
+			func_value.add(func.Func_Value(x));	//Appending function Value for final evaluation
 			double[] gradient = func.Gradient(x);	//Gradient of function f(x, S)
 			double[] NGradient = this.NormalizeGrad(gradient, x);	//Normalize Gradient
 			PCSFHead head = new PCSFHead(edges, edgecost, NGradient, s, g, B, trueSubGraph);
 			ArrayList<Integer> omega = head.bestForest.nodesInF;
 			double [] tempb = func.getArgMinFx(omega); //Implement projected gradient descent
+			/*System.out.println("Tempb is as follows:");
+			for(double element1: tempb){System.out.print(element1+ "\t");}
+			System.out.println();*/
 			ArrayRealVector ARV = new ArrayRealVector(x).subtract(new ArrayRealVector(tempb));
 			double[] b = ARV.toArray();
 			
@@ -95,7 +100,7 @@ public class IHT {
 			for(int i = 0; i < b.length; i++){this.x[i] = b[i];}
 		}
 		long end_time = System.nanoTime();
-		runTime = (long) ((end_time - start_time));
+		runTime = (long) ((end_time - start_time)/1e9);
 		System.out.println("Time taken"+runTime);
 		return R;
 	}

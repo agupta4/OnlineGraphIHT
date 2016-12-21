@@ -48,14 +48,15 @@ public class MeanScanStat implements Function{
 			return temp_HW;
 		}
 		public void setTemp_HW() {
-			this.temp_HW = weight;
+			for(int i = 0; i < weight.length; i++){this.temp_HW[i] = weight[i];}
+			//this.temp_HW = weight;
 			//for(double item: temp_HW){System.out.println(item);}
 		} 
 	   }
 	   
 	//Function Value Reckoning
 	public double Func_Value(double[] X) {
-		if(X == null)
+		if(X == null || S == null)
 			System.out.println("Error: Incorrect Input");
 		
 		Temp_weights obj = this.AlterWeights();
@@ -73,6 +74,7 @@ public class MeanScanStat implements Function{
 		if(!Double.isFinite(funcValue)){
 			System.out.println(" Error : elevated mean scan stat is not a real value, f is " + funcValue);
 		}
+		//System.out.print(funcValue + "\n");
 		return funcValue;
 	}
 	/**
@@ -108,7 +110,7 @@ public class MeanScanStat implements Function{
 		Temp_weights weights = new Temp_weights();
 		weights.setTemp_HW(); 		//To instantiate the temporary historical weights 
 		for(int element: this.S){
-			weights.temp_CW[element] = weights.getTemp_CW()[element];
+			weights.temp_CW[element] = weights.getTemp_HW()[element];
 			weights.temp_HW[element] = 0.0;
 		}
 		return weights;
@@ -149,6 +151,8 @@ public class MeanScanStat implements Function{
 				x1[k] = 0.0D;
 			}
 		}
+		//System.out.println("x1 is as follows:");
+		//for(double item: x1){System.out.print(item + "\t");}
 		return x1;
 	}
 	/**
