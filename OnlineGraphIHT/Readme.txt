@@ -14,7 +14,7 @@ with their respective crime rates.
 	
 	Sbar = V - S	Here, V is ground set of nodes.
 	
-- For experimentation, the simulation file1 consists of 9 ground set of nodes where a node is a 
+- For experimentation, the Historical and Current simulation files consists of 9 ground set of nodes where a node is a 
 road/block in a city. The main purpose for OnlineGraphIHT is to find out anomalous set of nodes 
 or blocks in an area which are having high crime rates. The same concept can be applied for civil 
 unrest, disease outbreak detection, etc. 
